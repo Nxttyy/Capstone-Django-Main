@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Admin.models import Admin, SuperAdmin
+from adminApp.models import Admin, SuperAdmin
 # Register your models here.
 
 class AdminAdmin(admin.ModelAdmin):
