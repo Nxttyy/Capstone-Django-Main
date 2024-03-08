@@ -7,8 +7,9 @@ main repository of the project.
 `cd Capstone-Django-main`
 ### create your virtual enviroment
 `python3 -m venv <venv-name>`
-### activate venv and install libraries required
+### activate venv
 `source ./venv/bin/activate`
+### install libraries required
 `pip install -r requirements.txt`
 ### run the development server
 `python3 library/manage.py runserver`
