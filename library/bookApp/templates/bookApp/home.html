@@ -1,11 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>title</title>
-</head>
-<body>
-	<h1>Books -- Home</h1>
-</body>
-</html>
+{% extends "./layout.html" %}
+{% block content %}
+	<div>
+		<p class="text-left display-3">Our Books</p>
+		
+		<div class="d-flex flex-wrap gap-3 bd-highlight align-items-start">
+			
+			{% for book in books%}
+				<div class="card mb-3  shadow-lg" style="max-width: 540px;">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="{{book.cover_image.url}}" class="img-fluid rounded-start" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h5 class="card-title">{{book.title}}</h5>
+								<h6 class="card-title">{{book.author}}</h6>
+								<p class="card-text overflow-hidden">{{ book.description }}</p>
+								<p class="card-text"><small class="text-body-secondary">Rated : {{ book.rating }}</small></p>
+								<span class="badge bg-info text-dark">{{ book.genre}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor%}
+		</div>
+	{% endblock %}
