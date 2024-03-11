@@ -10,9 +10,25 @@ class Book(models.Model):
 	genre =  models.CharField(max_length=150)
 	cover_image = models.ImageField(upload_to='Book-Covers/', default=settings.MEDIA_URL+'no-cover.jpeg')
 	rating = models.IntegerField(default=0)
-	description = models.TextField(default='No description available.')		
+	description = models.TextField(default='No description available.')	
+	# comments =  book.comment_set.all()	
 		# borrowers
 
 	def __str__(self):
 		return self.title
+
+	class Meta:
+		ordering = ["title"]
+
+class Comment(models.Model):
+	id = models.IntegerField(primary_key=True)
+	content = models.TextField()		
+	time_posted = models.TimeField(auto_now_add=True)
+	book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+	# poster --> relation with user
+
+	class Meta:
+		ordering = ["time_posted"]
+
 	
