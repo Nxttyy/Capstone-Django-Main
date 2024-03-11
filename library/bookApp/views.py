@@ -1,14 +1,37 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from bookApp.models import Comment, Book
 from django.conf import settings
-from bookApp.forms import CommentForm, SearchForm
+from bookApp.forms import CommentForm, SearchForm, BookUploadForm
 
 
 # Create your views here.
 def home(request):
 	books = Book.objects.all()
+
+	if request.method == "POST":
+		form = BookUploadForm(request.POST)
+		if form.is_valid():
+			# prompt = form.cleaned_data["prompt"]
+			# books = help_search(prompt)
+			form.save()
+			
+	else:
+		form = CommentForm()
+
 	return render(request, 'bookApp/home.html', {'books':books, 'search_form':SearchForm()})
+
+def book_upload(request):
+	if request.method == "POST":
+		form = BookUploadForm(request.POST, request.FILES)
+		if form.is_valid():
+			print(request.FILES)
+			form.save()
+			return redirect("/")
+			
+	else:
+		form = BookUploadForm()
+	return render(request, 'bookApp/book_upload.html', {'form':form})
 
 
 def book_detail(request, book_id):

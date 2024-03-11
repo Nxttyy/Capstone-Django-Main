@@ -18,26 +18,19 @@
 				    {{ search_form }}
 				    <input type="submit" value="Go">
 				</form>
-<!-- form class="d-flex">
-	<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-	<button class="btn btn-outline-success" type="submit">Search</button>
-</form> -->
+
 			</div>
 
 
 		</nav>
-		<!-- '' => BookUrls
-		'admin-managment/' => adminUrls
-		'user/' => user.urls
- -->
 
 		<div id="links">
 							<a class="navbar-brand" href={% url 'book-home'%}>Home</a>
 							<a class="navbar-brand" href={% url 'register'%}>register</a>
 							<a class="navbar-brand" href={% url 'login'%}>login</a>
 							<a class="navbar-brand" href={% url 'reset_password'%}>reset_password</a>
+							<a class="navbar-brand" href={% url 'book_upload'%}>book_upload</a>
 							
-
 		</div>
 		<div class="container">
 			{% block content%}

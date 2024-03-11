@@ -8,7 +8,7 @@ class Book(models.Model):
 	author = models.CharField(max_length=50)
 	pcs_left = models.CharField(max_length=50)
 	genre =  models.CharField(max_length=150)
-	cover_image = models.ImageField(upload_to='Book-Covers/', default=settings.MEDIA_URL+'no-cover.jpeg')
+	cover_image = models.ImageField(upload_to='Book-Covers/', default='no-cover.jpeg')
 	rating = models.IntegerField(default=0)
 	description = models.TextField(default='No description available.')	
 	# comments =  book.comment_set.all()	
