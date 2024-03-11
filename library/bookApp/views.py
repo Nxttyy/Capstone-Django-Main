@@ -7,7 +7,7 @@ from bookApp.forms import CommentForm
 
 # Create your views here.
 def home(request):
-	books = models.Book.objects.all()
+	books = Book.objects.all()
 	return render(request, 'bookApp/home.html', {'books':books, 'media_dir':settings.MEDIA_URL})
 
 
