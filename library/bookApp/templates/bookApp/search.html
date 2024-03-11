@@ -10,7 +10,6 @@
 			
 			{% for book in books%}
 				
-				<!-- <a href={% url 'book-detail' book_id=book.id %} class="no-style"><div class="card mb-3  shadow-lg" style="max-width: 540px;"> -->
 				<div class="card w-50" onclick="location.href={% url 'book-detail' book_id=book.id %};">
 					<img class="card-img-top" src="{{book.cover_image.url}}" alt="Card image cap">
 					<div class="card-body">

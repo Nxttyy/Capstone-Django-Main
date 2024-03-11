@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from bookApp.models import Comment, Book
 from django.conf import settings
-from bookApp.forms import CommentForm
+from bookApp.forms import CommentForm, SearchForm
 
 
 # Create your views here.
 def home(request):
 	books = Book.objects.all()
-	return render(request, 'bookApp/home.html', {'books':books, 'media_dir':settings.MEDIA_URL})
+	return render(request, 'bookApp/home.html', {'books':books, 'search_form':SearchForm()})
 
 
 def book_detail(request, book_id):
@@ -20,18 +20,31 @@ def book_detail(request, book_id):
 		form = CommentForm(request.POST)
 		if form.is_valid():
 			cont = form.cleaned_data["content"]
-			print(cont)
 			_comment = Comment()
 			_comment.content = form.cleaned_data["content"]
 			_comment.book = book.first()
 			_comment.save()
-            # process the data in form.cleaned_data as required
-            # ...
-            # return HttpResponseRedirect("/thanks/")
 
 	else:
-		# comments = book.comment_set.all()
 		form = CommentForm()
 
-	return render(request, 'bookApp/book-detail.html', {'book':book, 'form':form, 'comments':comments})	# book_id = request.GET.get('book_id')
+	return render(request, 'bookApp/book_detail.html', {'book':book, 'form':form, 'comments':comments, 'search_form':SearchForm()})	# book_id = request.GET.get('book_id')
 	
+
+def search_books(request, book_id=None):
+	# form = SearchForm()
+	books = []
+	if request.method == "POST":
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			prompt = form.cleaned_data["prompt"]
+			books = help_search(prompt)
+			
+	else:
+		form = CommentForm()
+	return render(request, 'bookApp/search.html', {'search_form':form, 'book':books})
+
+def help_search(prompt):
+	by_title = Book.objects.filter(title=prompt)
+	by_author = Book.objects.filter(author=prompt)
+	return by_title + by_author
