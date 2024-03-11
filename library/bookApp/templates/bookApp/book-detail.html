@@ -1,0 +1,9 @@
+{% extends "./layout.html" %}
+{% block content %}
+<h1>HHH</h1>
+{% for book in book %} 
+	<h1>{{book.title}}</h1>
+	<h1>{{book.description}}</h1>
+
+{% endfor%}
+{% endblock %}
