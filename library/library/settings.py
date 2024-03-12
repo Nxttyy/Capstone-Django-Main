@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'adminApp', 
     'bookApp',
-    'user',
-    'bookApp.apps.BookappConfig',
+    'users',
+    # 'bookApp.apps.BookappConfig',
     'bootstrap5',
 
 ]
@@ -171,9 +171,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
+    'users',
     'bookApp',
-    'adminApp',
     'bootstrap5',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -274,4 +273,11 @@ EMAIL_USE_TLS = 'True'
 EMAIL_HOST_USER = 'beimnetmelese16@gmail.com'
 EMAIL_HOST_PASSWORD = 'hvpaejvwciqgzxnd'
 DEFAULT_FROM_EMAIL = 'beimnetmelese16@gmail.com'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+# AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
+# CSRF_COOKIE_DOMAIN = ['None']
+
 # >>>>>>> django-user-model/main
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:8080']
+

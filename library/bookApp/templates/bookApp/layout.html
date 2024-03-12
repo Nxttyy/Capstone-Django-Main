@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}{% endblock %}</title>
 		{% load bootstrap5 %}
 		{% bootstrap_css %}
 		{% bootstrap_javascript %}
 		{% load crispy_forms_tags %}
+
 
 	</head>
 	<body>
@@ -30,8 +30,8 @@
 							<a class="navbar-brand" href={% url 'book-home'%}>Home</a>
 							<a class="navbar-brand" href={% url 'register'%}>register</a>
 							<a class="navbar-brand" href={% url 'login'%}>login</a>
-							<a class="navbar-brand" href={% url 'reset_password'%}>reset_password</a>
 							<a class="navbar-brand" href={% url 'book_upload'%}>book_upload</a>
+							<a class="navbar-brand" href={% url 'logout'%}>logout</a>
 							
 		</div>
 		<div class="container">
