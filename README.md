@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Capstone-Django-main
 main repository of the project.
 ## How to run it
@@ -14,7 +13,3 @@ main repository of the project.
 `pip install -r requirements.txt`
 ### run the development server
 `python3 library/manage.py runserver`
-
-=======
-# django-user-model
->>>>>>> django-user-model/main
