@@ -16,14 +16,13 @@ ROLE_CHOICES = (
 )
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(_("Email Address"), unique=True)
     first_name = models.CharField(max_length=50, default='default-firstname')
     last_name = models.CharField(max_length=50, default='default-lastname')
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    profile_image = models.ImageField(upload_to='User-Profiles/', default='no-profile.png')
-
+    profile_image = models.ImageField(upload_to='User-Profiles/', default='/defaults/no-profile.png')
 
 
     role = models.CharField(max_length=30, choices = ROLE_CHOICES, default='ST')

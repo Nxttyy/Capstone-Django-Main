@@ -3,6 +3,9 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm, LoginUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+
 # Create your views here.
 def register(request):
 	if request.method == "POST":
@@ -10,6 +13,7 @@ def register(request):
 		if form.is_valid():
 			# print(request.FILES)
 			form.save()
+			messages.success(request, "Account Created")
 			return redirect("login")
 			
 	else:
@@ -27,8 +31,7 @@ def login(request):
 			password = request.POST.get("password")
 			# password = 'asdf1234!@#$'
 			user = authenticate(request, username = email, password = password)
-			print(user)
-			print(email, password)
+
 			if user is not None:
 				auth.login(request,user)
 				return redirect("book-home")
