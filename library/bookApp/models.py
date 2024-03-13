@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from users.models import CustomUser
 
 # Create your models here.
 class Book(models.Model):
@@ -11,8 +12,10 @@ class Book(models.Model):
 	cover_image = models.ImageField(upload_to='Book-Covers/', default='no-cover.jpeg')
 	rating = models.IntegerField(default=0)
 	description = models.TextField(default='No description available.')	
+	borrowers = models.ManyToManyField(CustomUser)
 	# comments =  book.comment_set.all()	
 		# borrowers
+	# books = CustomUser.book_set.all()
 
 	def __str__(self):
 		return self.title

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from bookApp.models import Comment, Book
 from django.conf import settings
 from bookApp.forms import CommentForm, SearchForm, BookUploadForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -21,6 +22,7 @@ def home(request):
 
 	return render(request, 'bookApp/home.html', {'books':books, 'search_form':SearchForm()})
 
+@login_required
 def book_upload(request):
 	if request.method == "POST":
 		form = BookUploadForm(request.POST, request.FILES)

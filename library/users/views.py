@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserChangeForm, LoginUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import auth
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register(request):
 	if request.method == "POST":
@@ -41,3 +42,14 @@ def login(request):
 def log_out(request):
     auth.logout(request)
     return redirect("book-home")
+
+@login_required
+def account(request):
+	# context = {"form": form}
+	user = request.user
+	# print(user.first_name)
+
+	context = {"user": user}
+
+	
+	return render(request, "users/account.html", context)
