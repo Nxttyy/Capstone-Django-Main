@@ -21,6 +21,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50, default='default-lastname')
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_banned = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     profile_image = models.ImageField(upload_to='User-Profiles/', default='/defaults/no-profile.png')
 

@@ -19,7 +19,7 @@ def register(request):
 			
 	else:
 		form = CustomUserCreationForm()
-	return render(request, 'users/reg.html', {'form':form})
+	return render(request, 'users/registration.html', {'form':form})
 
 def login(request):
 	if request.method == "POST":
@@ -60,6 +60,6 @@ def account(request):
 		print(b.title)
 		print(b.borrowers)
 
-	print(user)
+	print()
 	
 	return render(request, "users/account.html", context)

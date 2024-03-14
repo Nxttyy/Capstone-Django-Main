@@ -14,11 +14,12 @@
 				<div class="card w-50" onclick="location.href={% url 'book-detail' book_id=book.id %};">
 					<img class="card-img-top" src="{{book.cover_image.url}}" alt="Card image cap">
 					<div class="card-body">
-						<a href={% url 'book-detail' book_id=book.id %}><h5 class="card-title">{{book.title}}</h5></a>
-						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-						<p class="card-text"><small class="text-muted">Rated : {{ book.rating }}</small></p>
-						<p class=""><span class="badge badge-info"> {{ book.genre}}</span></p>
-						{{ book.genre}}
+						<h5 class="card-title "><a href={% url 'book-detail' book_id=book.id %} class="link-offset-2 link-underline link-underline-opacity-0">{{book.title}}</a></h5>
+						<p class="card-text">{{book.author}}</p>
+						<div class="d-flex flex-row justify-content-between">
+							<h4><span class="badge badge-secondary bg-info">{{ book.genre}}</span></h4>
+							<p class="card-text"><small class="text-muted">{{ book.rating }}/5</small></p>
+						</div>
 					</div>
 				</div>
 				

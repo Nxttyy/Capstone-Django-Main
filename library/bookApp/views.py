@@ -15,6 +15,15 @@ class BookListView(ListView):
 	context_object_name = 'books'
 	ordering = ['-created_at']
 
+
+
+	def get_context_data(self, **kwargs):
+		context = super(BookListView, self).get_context_data(**kwargs)
+		user = self.request.user
+		if user:
+			context['user'] = user
+		return context
+
 @login_required
 def book_upload(request):
 	if request.method == "POST":

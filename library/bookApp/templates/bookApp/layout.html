@@ -7,19 +7,40 @@
 		{% bootstrap_css %}
 		{% bootstrap_javascript %}
 		{% load crispy_forms_tags %}
+		<title>{% block title%}
+		{% endblock %}</title>
 	</head>
 	<body>
-		<nav class="navbar navbar-light bg-light border-bottom">
-			<div class="container-fluid">
-				<a class="navbar-brand" href={% url 'book-home'%}>TiM2</a>
-				<form method="POST" action="search/">
-					{% csrf_token %}
-					{{ search_form }}
-					<input type="submit" value="Go">
-				</form>
-			</div>
-		</nav>
-		<div id="links">
+		
+		<!-- links(nav-bar):
+		loged_in:
+			admin:
+				book-upload
+			student:
+				account
+			common:
+				account
+		not logged in:
+			login
+		commom:
+			search bar
+		links(on page):
+			home:
+				book-detail(on card)
+			book-detail:
+				admin:
+					delete
+					update
+				student:
+					borrow
+					return
+			account:
+				admin:
+				student:
+				common:
+					logout
+		edit -->
+		<!-- <div id="links">
 			<a class="navbar-brand" href={% url 'book-home'%}>Home</a>
 			<a class="navbar-brand" href={% url 'register'%}>register</a>
 			<a class="navbar-brand" href={% url 'login'%}>login</a>
@@ -27,16 +48,37 @@
 			<a class="navbar-brand" href={% url 'logout'%}>logout</a>
 			<a class="navbar-brand" href={% url 'user-account'%}>account</a>
 			
+		</div> -->
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href={% url 'book-home'%}>Home</a>
+				{% if user.is_authenticated %}
+					{% if user.is_staff or user.role == 'admin' %}
+						<a class="navbar-brand" href={% url 'book_upload'%}>Upload</a>
+					{% endif %}
+					<a class="navbar-brand" href={% url 'logout'%}>Logout</a>
+					<a class="navbar-brand" href={% url 'user-account'%}>
+						<img src="{{user.profile_image.url}}" alt="Avatar Logo" style="width:45px;" class="rounded-pill">
+					</a>
+				{% else %}
+					<a class="navbar-brand" href={% url 'login'%}>Login</a>
+				{% endif %}
+				
+			</div>
+		</nav>
+		{% if messages %}
+			<div class="messages">
+				{% for message in messages %}
+					<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+					{{ message }}
+				</div>
+			{% endfor %}
 		</div>
-		{% for message in messages %}
-			{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-				<p id="timer" class="alert alert-success float-center text-center text-clour">{{message}}</p>
-			{% endif %}
-		{% endfor %}
-		<div class="container">
-			{% block content%}
-			{% endblock %}
-		</div>
-		
-	</body>
+	{% endif %}
+	<div class="container">
+		{% block content%}
+		{% endblock %}
+	</div>
+	
+</body>
 </html>
