@@ -4,9 +4,10 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
+*/media/Book-Covers
+*/media/User-Profiles
 
-!*media/defaults/*
+!media/defaults/
 # Backup files # 
 *.bak 
 
