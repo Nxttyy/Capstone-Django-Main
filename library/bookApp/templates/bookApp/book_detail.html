@@ -1,21 +1,29 @@
 {% extends "./layout.html" %}
 {% block content %}
 	<h1>HHH</h1>
-	<div class="d-flex"> {% for book in book %}
+	<div class="d-flex"> 
+			{% for book in book %}
+
 		<img class="card-img-top" src="{{book.cover_image.url}}" alt="Card image cap">
 		<h1>{{book.title}}</h1>
 		<h1>{{book.author}}</h1>
 		<h3>{{book.description}}</h3>
-	{% endfor%}
+		<a href={% url 'book-detail' book_id=book.id %} >borrow</a>
+		<a href={% url 'book-delete' book_id=book.id %} >delete</a>
+
+
+	{% endfor %}
 	<div class="w-50">
 		{% for comment in comments%}
-	<input class="form-control" type="text" placeholder="{{comment.content}}" readonly>
-{% endfor %}
-	<form method="post" action="">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+			<input class="form-control" type="text" placeholder="{{comment.content}}" readonly>
+		{% endfor %}
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ form }}
+			<input type="submit" value="Submit">
+		</form>
+	</div>
 </div>
-</div>
+
+
 {% endblock %}

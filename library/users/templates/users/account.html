@@ -10,7 +10,9 @@
 	<h1>{{ user.role }}</h1>
 
  -->
-
+ {% for borrowed_book in borrowed_books %}
+ <h3>{{borrowed_book.title}}</h3>
+{% endfor %}
 <section class="vh-100" style="background-color: #9de2ff;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">

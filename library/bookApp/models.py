@@ -13,6 +13,8 @@ class Book(models.Model):
 	rating = models.IntegerField(default=0)
 	description = models.TextField(default='No description available.')	
 	borrowers = models.ManyToManyField(CustomUser)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 	# comments =  book.comment_set.all()	
 		# borrowers
 	# books = CustomUser.book_set.all()

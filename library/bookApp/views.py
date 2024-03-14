@@ -4,23 +4,16 @@ from bookApp.models import Comment, Book
 from django.conf import settings
 from bookApp.forms import CommentForm, SearchForm, BookUploadForm
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView
+
+from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
-def home(request):
-	books = Book.objects.all()
-
-	if request.method == "POST":
-		form = BookUploadForm(request.POST)
-		if form.is_valid():
-			# prompt = form.cleaned_data["prompt"]
-			# books = help_search(prompt)
-			form.save()
-			
-	else:
-		form = CommentForm()
-
-	return render(request, 'bookApp/home.html', {'books':books, 'search_form':SearchForm()})
+class BookListView(ListView):
+	model = Book
+	template_name = 'bookApp/home.html'
+	context_object_name = 'books'
+	ordering = ['-created_at']
 
 @login_required
 def book_upload(request):
@@ -73,3 +66,36 @@ def help_search(prompt):
 	by_title = Book.objects.filter(title=prompt)
 	by_author = Book.objects.filter(author=prompt)
 	return by_title + by_author
+
+@login_required
+def edit_book(request, book_id):
+	book = Book.objects.get(pk=book_id)
+
+	if request.method == "POST":
+		form = BookUploadForm(request.POST, request.FILES, instance=book)
+		if form.is_valid():
+			print(request.FILES)
+			form.save()
+			return redirect("/")
+			
+	else:
+		form = BookUploadForm(instance=book)
+	return render(request, 'bookApp/book_upload.html', {'form':form})
+
+@login_required
+def delete_book(request, book_id):
+	book = Book.objects.get(pk=book_id)
+	book.delete()
+
+	return redirect('book-home')	
+
+
+@login_required
+def borrow(request, book_id):
+	print("borrowed")
+	user = request.user
+	book = Book.objects.get(pk=book_id)
+	book.borrowers.add(user)
+	book.save()
+
+	return redirect('book-home')

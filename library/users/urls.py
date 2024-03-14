@@ -8,6 +8,7 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', log_out, name='logout'),
     path('account/', account, name='user-account'),
+    # path('borrow/<book_id>', borrow, name='borrow-book'),
 
 
 

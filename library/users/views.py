@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from bookApp.models import Book
 
 
 # Create your views here.
@@ -52,7 +53,13 @@ def account(request):
 	user = request.user
 	# print(user.first_name)
 
-	context = {"user": user}
+	context = {"user": user, "borrowed_books":user.book_set.all() }
+	print(user.book_set.all())
+	for b in user.book_set.all():
+		print("*")
+		print(b.title)
+		print(b.borrowers)
 
+	print(user)
 	
 	return render(request, "users/account.html", context)

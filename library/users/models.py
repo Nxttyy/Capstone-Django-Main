@@ -25,7 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(upload_to='User-Profiles/', default='/defaults/no-profile.png')
 
 
-    role = models.CharField(max_length=30, choices = ROLE_CHOICES, default='ST')
+    role = models.CharField(max_length=30, choices = ROLE_CHOICES, default=ST)
 
 
     USERNAME_FIELD = "email"
