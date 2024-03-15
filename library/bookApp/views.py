@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q # new
 
 
 class BookListView(ListView):
@@ -64,18 +65,31 @@ def book_detail(request, book_id):
 	return render(request, 'bookApp/book_detail.html', {'book':book, 'form':form, 'comments':comments, 'search_form':SearchForm()})	# book_id = request.GET.get('book_id')
 	
 
-def search_books(request, book_id=None):
-	# form = SearchForm()
-	books = []
-	if request.method == "POST":
-		form = CommentForm(request.POST)
-		if form.is_valid():
-			prompt = form.cleaned_data["prompt"]
-			books = help_search(prompt)
+# def search_books(request, book_id=None):
+# 	# form = SearchForm()
+# 	books = []
+# 	if request.method == "POST":
+# 		form = CommentForm(request.POST)
+# 		if form.is_valid():
+# 			prompt = form.cleaned_data["prompt"]
+# 			books = help_search(prompt)
 			
-	else:
-		form = CommentForm()
-	return render(request, 'bookApp/search.html', {'search_form':form, 'book':books})
+# 	else:
+# 		form = CommentForm()
+# 	return render(request, 'bookApp/search.html', {'search_form':form, 'book':books})
+
+class SearchResultsView(ListView):
+	model = Book
+	template_name = "bookApp/search.html"
+	context_object_name = 'books'
+
+
+	def get_queryset(self):  # new
+		query = self.request.GET.get("q")
+		object_list = Book.objects.filter(
+			Q(title__icontains=query) | Q(author__icontains=query)
+		)
+		return object_list
 
 def help_search(prompt):
 	by_title = Book.objects.filter(title=prompt)

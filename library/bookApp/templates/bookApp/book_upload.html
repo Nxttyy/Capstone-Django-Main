@@ -4,9 +4,13 @@
 	Book-Upload
 {% endblock%}
 {% block content %}
+<fieldset class="m-5">
+    <legend class="">Upload A Book</legend>
+
 	<form method="post" action="" enctype="multipart/form-data" class="">
 		{% csrf_token %}
 		{{ form|crispy }}
 		<input type="submit" value="Upload" class="btn btn-primary">
 	</form>
+</fieldset>
 {% endblock %}

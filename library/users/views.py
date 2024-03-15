@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserChangeForm, LoginUserForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, LoginUserForm, CustomUserUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from bookApp.models import Book
+from .models import CustomUser
 
 
 # Create your views here.
@@ -63,3 +64,17 @@ def account(request):
 	print()
 	
 	return render(request, "users/account.html", context)
+
+@login_required
+def edit_account(request):
+	user = request.user
+
+	if request.method == "POST":
+		form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
+		if form.is_valid():
+			form.save()
+			return redirect("user-account")
+			
+	else:
+		form = CustomUserChangeForm(instance=user)
+	return render(request, 'users/registration.html', {'form':form})

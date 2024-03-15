@@ -1,4 +1,6 @@
 {% extends "./layout.html" %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 	<div class="d-flex flex-row p-5 m-3 gap-5">
 		{% for book in book %}
@@ -14,9 +16,11 @@
 				<a href={% url 'book-detail' book_id=book.id %} class="btn btn-primary">borrow</a>
 				<a href={% url 'book-detail' book_id=book.id %} class="btn btn-info">Update</a>
 				<a href={% url 'book-delete' book_id=book.id %} class="btn btn-danger">delete</a>
-				
+
 			</div>
 		{% endfor %}
+		<template>
+
 
 		<div class="d-flex flex-column">
 			<div class="d-flex flex-column g-1 p-3">
@@ -46,9 +50,12 @@
 				{% endfor %}
 			</div>
 			</div>
+			<fieldset class="m-5">
+    <legend class="">Post A Comment</legend>
+
 			<form method="post" action="">
 				{% csrf_token %}
-				{{ form }}
+				{{ form|crispy}}
 				<input type="submit" value="Submit" class=>
 			</form>
 		</div>

@@ -9,12 +9,18 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('email','first_name', 'last_name',)
 
+class CustomUserUpdateForm(UserCreationForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ('email','first_name', 'last_name', 'profile_image',)
+
 
 class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ("email",)
+        fields = ('email','first_name', 'last_name', 'profile_image',)
 
 class LoginUserForm(AuthenticationForm):
     # email = CharField(widget=EmailInput())

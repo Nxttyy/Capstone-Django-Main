@@ -4,18 +4,26 @@
 	Home
 {% endblock%}
 {% block content %}
-	<!-- <div> -->
-	<p class="text-left display-3">Our Books</p>
 	
-	<div class="d-flex flex-wrap gap-3  ">
+	<div class="input-group rounded text-center m-5">
+		<form action="{% url 'search-results' %}" method="get" class="d-flex flex-row">
+			<input type="text" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q"/>
+					<span class="input-group-text border-0" id="search-addon">
+
+			<input type="submit" value="Upload" class="btn btn-primary">
+		</span>
+		
+	</div>
+	
+	<div class="d-flex flex-wrap gap-5  ">
 		
 		{% for book in books%}
 			
 			<!-- <a href={% url 'book-detail' book.id %} class="no-style"><div class="card mb-3  shadow-lg" style="max-width: 540px;"> -->
-			<div class="card w-50" onclick="location.href={% url 'book-detail' book_id=book.id %};">
+			<div class="card w-50 shadow" onclick="location.href={% url 'book-detail' book_id=book.id %};">
 				<img class="card-img-top" src="{{book.cover_image.url}}" alt="Card image cap">
 				<div class="card-body">
-					<h5 class="card-title "><a href={% url 'book-detail' book_id=book.id %} class="link-offset-2 link-underline link-underline-opacity-0">{{book.title}}</a></h5>
+					<h5 class="card-title "><a href={% url 'book-detail' book_id=book.id %} class="bg-light text-dark" style="text-decoration: none;">{{book.title}}</a></h5>
 					<p class="card-text">{{book.author}}</p>
 					<div class="d-flex flex-row justify-content-between">
 						<h4><span class="badge badge-secondary bg-info">{{ book.genre}}</span></h4>
@@ -29,46 +37,45 @@
 	
 	{% get_proper_elided_page_range paginator page_obj.number as page_range %} <!-- here -->
 	<div class="d-flex m-3 justify-content-center">
-	<nav aria-label="... text-center">
-		<ul class="pagination">
-			{% if page_obj.has_previous %}
-				<li class="page-item">
-					<a class="page-link" href="?page=1">&laquo; first</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
-				</li>
-				
-			{% endif %}
-			{% for i in page_range %}
-				
-				{% if page_obj.number == i %}
-					<li class="active page-item">
-						<span class="page-link">{{ i }}</span>
+		<nav aria-label="... text-center">
+			<ul class="pagination">
+				{% if page_obj.has_previous %}
+					<li class="page-item">
+						<a class="page-link" href="?page=1">&laquo; first</a>
 					</li>
-				{% else %}
-					{% if i == paginator.ELLIPSIS %}
-						<li class="page-item">
-							<span class="page-link">{{ paginator.ELLIPSIS }}</span>
+					<li class="page-item">
+						<a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+					</li>
+					
+				{% endif %}
+				{% for i in page_range %}
+					
+					{% if page_obj.number == i %}
+						<li class="active page-item">
+							<span class="page-link">{{ i }}</span>
 						</li>
 					{% else %}
-						<li class="page-item">
-							<a class="page-link" href="?page={{ i }}">{{ i }}</a>
-						</li>
+						{% if i == paginator.ELLIPSIS %}
+							<li class="page-item">
+								<span class="page-link">{{ paginator.ELLIPSIS }}</span>
+							</li>
+						{% else %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+							</li>
+						{% endif %}
 					{% endif %}
+				{% endfor %}
+				{% if page_obj.has_next %}
+					
+					<li class="page-item">
+						<a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					</li>
 				{% endif %}
-			{% endfor %}
-			{% if page_obj.has_next %}
-				
-				<li class="page-item">
-					<a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-				</li>
-			{% endif %}
-		</ul>
-	</nav>
+			</ul>
+		</nav>
 	</div>
-
 {% endblock %}

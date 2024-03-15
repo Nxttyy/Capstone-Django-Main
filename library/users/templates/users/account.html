@@ -1,12 +1,7 @@
 {% extends "bookApp/layout.html" %}
 {% block content %}
   {% if user %}
-    <!--    <img class="card-img-top" src="{{user.profile_image.url}}" alt="Card image cap">
-    <h1>{{ user.first_name }}</h1>
-    <h1>{{ user.last_name }}</h1>
-    <h1>{{ user.email }}</h1>
-    <h1>{{ user.role }}</h1>
-    -->
+    
     <div class="text-center m-5 gap-3 p-3">
       <img src="{{user.profile_image.url}}"
       alt="Generic placeholder image text-center" class="img-fluid"
@@ -14,29 +9,30 @@
       <h2 class="text-center strong">{{ user.first_name }}    {{ user.last_name }}</h2>
       <h2 class="text-center text-muted">{{ user.email }}</h2>
       {% if user.is_staff %}
-            <h2><span class="badge badge-secondary bg-info text-center">SuperAdmin</span></h2>
-
+        <h2><span class="badge badge-secondary bg-info text-center">SuperAdmin</span></h2>
       {% else %}
-            <h2><span class="badge badge-secondary bg-info text-center">{{ user.role}}</span></h2>
-
+        <h2><span class="badge badge-secondary bg-info text-center">{{ user.role}}</span></h2>
       {% endif %}
+      {%if borrowed_books%}
       <h2 class="text-start">Books Borrowed:</h2>
-            <div class="d-flex flex-row gap-1">
-
-      {% for borrowed_book in borrowed_books %}
-        <div class="card w-50" >
-          <img class="card-img-top" src="{{borrowed_book.cover_image.url}}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title ">{{borrowed_book.title}}</h5>
-            <p class="card-text">{{borrowed_book.author}}</p>
-            <div class="d-flex flex-row justify-content-between">
-              <h4><span class="badge badge-secondary bg-info">{{ borrowed_book.genre}}</span></h4>
-              <p class="card-text"><small class="text-muted">{{ borrowed_book.rating }}/5</small></p>
+      <div class="d-flex flex-row gap-1">
+        {% for borrowed_book in borrowed_books %}
+          <div class="card w-50" >
+            <img class="card-img-top" src="{{borrowed_book.cover_image.url}}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title ">{{borrowed_book.title}}</h5>
+              <p class="card-text">{{borrowed_book.author}}</p>
+              <div class="d-flex flex-row justify-content-between">
+                <h4><span class="badge badge-secondary bg-info">{{ borrowed_book.genre}}</span></h4>
+                <p class="card-text"><small class="text-muted">{{ borrowed_book.rating }}/5</small></p>
+              </div>
             </div>
           </div>
-        </div>
-       
-      {% endfor %}        </div>
+          
+        {% endfor %}
+      </div>
+      {% endif %}
+              <a href={% url 'account-edit'  %} class="btn btn-info">Update</a>
 
     </div>
     

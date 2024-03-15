@@ -7,7 +7,7 @@ class Book(models.Model):
 	id = models.IntegerField(primary_key=True)
 	title = models.CharField(max_length=50)
 	author = models.CharField(max_length=50)
-	pcs_left = models.CharField("Total number of copies", max_length=50)
+	pcs_left = models.IntegerField("Total number of copies")
 	genre =  models.CharField(max_length=150)
 	cover_image = models.ImageField(upload_to='Book-Covers/', default='defaults/no-cover.jpeg')
 	rating = models.FloatField(default=0)
