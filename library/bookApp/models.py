@@ -31,7 +31,7 @@ class Comment(models.Model):
 	time_posted = models.TimeField(auto_now_add=True)
 	book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
-	# poster --> relation with user
+	poster = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 	class Meta:
 		ordering = ["time_posted"]

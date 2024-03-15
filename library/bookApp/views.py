@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 class BookListView(ListView):
@@ -14,6 +15,7 @@ class BookListView(ListView):
 	template_name = 'bookApp/home.html'
 	context_object_name = 'books'
 	ordering = ['-created_at']
+	paginate_by = 2
 
 
 
@@ -46,10 +48,14 @@ def book_detail(request, book_id):
 	if request.method == "POST":
 		form = CommentForm(request.POST)
 		if form.is_valid():
-			cont = form.cleaned_data["content"]
+		    # comment = form.save(commit=False)
+		    # profile.poster = request.user
+		    # profile.save()
+
 			_comment = Comment()
 			_comment.content = form.cleaned_data["content"]
 			_comment.book = book.first()
+			_comment.poster = request.user
 			_comment.save()
 
 	else:
@@ -93,9 +99,19 @@ def edit_book(request, book_id):
 
 @login_required
 def delete_book(request, book_id):
-	book = Book.objects.get(pk=book_id)
-	book.delete()
-
+	user = request.user
+	if user.is_staff or user.role == 'Admin':
+		try:
+			book = Book.objects.get(pk=book_id)
+		except Book.DoesNotExist:
+			book = None
+		if book:
+			book.delete()
+			messages.success(request, "Book Deleted!")
+			return redirect("book-detail")
+	else:
+		messages.alert(request, "Privilaged Action For Admin and SuperAdmin Only!")
+		return redirect("book-detail")
 	return redirect('book-home')	
 
 
