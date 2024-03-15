@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from bookApp.models import Comment, Book
 from django.conf import settings
-from bookApp.forms import CommentForm, SearchForm, BookUploadForm
+from bookApp.forms import CommentForm, SearchForm, BookUploadForm, BookRatingForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q # new
-
+# from users.views 
 
 class BookListView(ListView):
 	model = Book
@@ -40,6 +40,24 @@ def book_upload(request):
 		form = BookUploadForm()
 	return render(request, 'bookApp/book_upload.html', {'form':form})
 
+def book_rating(request, book_id):
+	book = Book.objects.get(pk=book_id)
+
+	if request.method == "POST":
+		form = BookRatingForm(request.POST, instance=book)
+		if form.is_valid():
+			# print(request.FILES)
+			book
+			form.save()
+			return redirect("/")
+			
+	else:
+		if request.user in book.first().borrowers.all():
+			is_user_borrower = True
+		else:
+			is_user_borrower = False
+		context =  {'book':book, 'form':form, 'comments':comments, 'is_user_borrower':is_user_borrower}
+		return render(request, 'bookApp/book_detail.html', context)	
 
 def book_detail(request, book_id):
 	book = Book.objects.filter(id=book_id)
@@ -49,35 +67,22 @@ def book_detail(request, book_id):
 	if request.method == "POST":
 		form = CommentForm(request.POST)
 		if form.is_valid():
-		    # comment = form.save(commit=False)
-		    # profile.poster = request.user
-		    # profile.save()
-
 			_comment = Comment()
 			_comment.content = form.cleaned_data["content"]
 			_comment.book = book.first()
 			_comment.poster = request.user
 			_comment.save()
 
-	else:
-		form = CommentForm()
-
-	return render(request, 'bookApp/book_detail.html', {'book':book, 'form':form, 'comments':comments, 'search_form':SearchForm()})	# book_id = request.GET.get('book_id')
 	
+	if request.user in book.first().borrowers.all():
+		is_user_borrower = True
+	else:
+		is_user_borrower = False
 
-# def search_books(request, book_id=None):
-# 	# form = SearchForm()
-# 	books = []
-# 	if request.method == "POST":
-# 		form = CommentForm(request.POST)
-# 		if form.is_valid():
-# 			prompt = form.cleaned_data["prompt"]
-# 			books = help_search(prompt)
-			
-# 	else:
-# 		form = CommentForm()
-# 	return render(request, 'bookApp/search.html', {'search_form':form, 'book':books})
+	context =  {'book':book, 'comment_form':CommentForm(), 'rating_form':BookRatingForm(), 'comments':comments, 'is_user_borrower':is_user_borrower}
 
+	return render(request, 'bookApp/book_detail.html', context)	
+	
 class SearchResultsView(ListView):
 	model = Book
 	template_name = "bookApp/search.html"
@@ -103,8 +108,10 @@ def edit_book(request, book_id):
 	if request.method == "POST":
 		form = BookUploadForm(request.POST, request.FILES, instance=book)
 		if form.is_valid():
-			print(request.FILES)
-			form.save()
+			rating = form.cleaned_data['rating']
+			# bad ratting calculation (needs improvement)
+			book.rating = (book.rating + rating)/2
+			book.save()
 			return redirect("/")
 			
 	else:
@@ -124,17 +131,39 @@ def delete_book(request, book_id):
 			messages.success(request, "Book Deleted!")
 			return redirect("book-detail")
 	else:
-		messages.alert(request, "Privilaged Action For Admin and SuperAdmin Only!")
+		messages.error(request, "Privilaged Action For Admin and SuperAdmin Only!")
 		return redirect("book-detail")
 	return redirect('book-home')	
 
 
 @login_required
 def borrow(request, book_id):
-	print("borrowed")
 	user = request.user
 	book = Book.objects.get(pk=book_id)
-	book.borrowers.add(user)
+
+
+	if len(user.book_set.all()) >= 3:
+		if book.pcs_left <= 0:
+			messages.error(request, f"All the copies are taken, visit later!")
+			return redirect('book-home')
+
+		messages.error(request, f"You have reached the limit for borrowing books, return some to borrow again.")
+		return redirect('user-account')
+	else:
+		book.pcs_left = book.pcs_left - 1
+		book.borrowers.add(user)
+		book.save()
+
+		messages.success(request, f"You succesfuly borrowed, {book.title}")
+		return redirect('user-account')
+
+@login_required
+def return_book(request, book_id):
+	user = request.user
+	book = Book.objects.get(pk=book_id)
+	book.borrowers.remove(user)
+	book.pcs_left = book.pcs_left + 1
 	book.save()
 
-	return redirect('book-home')
+	messages.success(request, f"You succesfuly retuned, {book.title}")
+	return redirect('user-account')

@@ -1,10 +1,9 @@
 {% extends "./layout.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-	<div class="d-flex flex-row p-5 m-3 gap-5">
+	<div class="d-flex  flex-row p-5 m-3 gap-5">
 		{% for book in book %}
-			<div class="p-2 w-100bd-highlight">
+			<div class="p-2 w-75 bd-highlight">
 				<!-- <img class="card-img-top" src="{{book.cover_image.url}}" alt="Card image cap"> -->
 				<img src="{{book.cover_image.url}}" class="img-fluid img-thumbnail" alt="Responsive image">
 				<div class="d-flex flex-column justify-content-center"><h1>{{book.title}}</h1>
@@ -13,51 +12,49 @@
 				<h3 class="text-muted">{{book.description}}</h3>
 				<h5 class="text-muted">{{book.created_at}}</h5>
 				<div class="d-flex flex-row justify-content-center gap-2 mt-5"></div>
-				<a href={% url 'book-detail' book_id=book.id %} class="btn btn-primary">borrow</a>
-				<a href={% url 'book-detail' book_id=book.id %} class="btn btn-info">Update</a>
-				<a href={% url 'book-delete' book_id=book.id %} class="btn btn-danger">delete</a>
-
-			</div>
-		{% endfor %}
-		<template>
-
-
-		<div class="d-flex flex-column">
-			<div class="d-flex flex-column g-1 p-3">
-				<div class="row d-flex justify-content-center">
-
+				{%if is_user_borrower %}
+				<a href={% url 'book-return' book_id=book.id %} class="btn btn-primary">return</a>
+			{% else %}
+				<a href={% url 'book-borrow' book_id=book.id %} class="btn btn-primary">borrow</a>
+			{% endif %}
+			<a href={% url 'book-edit' book_id=book.id %} class="btn btn-info">Update</a>
+			<a href={% url 'book-delete' book_id=book.id %} class="btn btn-danger">delete</a>
+		</div>
+		<form method="post" action={% url 'book-rate' book_id=book.id %}>
+			{% csrf_token %}
+			{{ rating_form|crispy}}
+			<input type="submit" value="Submit" class=>
+		</form>
+	{% endfor %}
+	<!-- <template> -->
+	<div class="d-flex flex-column">
+		
+		<div class="d-flex flex-column g-1 p-3">
+			<div class="row d-flex justify-content-center">
 				{% for comment in comments%}
 					<div class="card mb-4">
-						<div class="card-body">
+						<div class="card-body ">
 							<p>{{comment.content}}</p>
-							<div class="d-flex justify-content-between">
+							<div class="d-flex justify-content-between ">
 								<div class="d-flex flex-row align-items-center">
 									<img src="{{comment.poster.profile_image.url}}" alt="avatar" width="25"
 									height="25" />
-									<p class="small mb-0 ms-2">{{comment.poster.first_name}}</p>
+									<p class="small mb-0 ms-2 text-muted">{{comment.poster.first_name}}</p>
 								</div>
-								<!-- <div class="d-flex flex-row align-items-center">
-									<p class="small text-muted mb-0">Upvote?</p>
-									<i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
-									<p class="small text-muted mb-0">3</p>
-								</div> -->
 							</div>
 						</div>
 					</div>
-
-
 					<!-- <input class="form-control" type="text" placeholder="{{comment.content}}" readonly> -->
 				{% endfor %}
 			</div>
-			</div>
-			<fieldset class="m-5">
-    <legend class="">Post A Comment</legend>
-
-			<form method="post" action="">
-				{% csrf_token %}
-				{{ form|crispy}}
-				<input type="submit" value="Submit" class=>
-			</form>
 		</div>
+		<!-- <fieldset class="m-5"> -->
+		<!-- <legend class="">Post A Comment</legend> -->
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ comment_form|crispy}}
+			<input type="submit" value="Submit" class=>
+		</form>
 	</div>
+</div>
 {% endblock %}

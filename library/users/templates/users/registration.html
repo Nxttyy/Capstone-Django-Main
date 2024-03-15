@@ -2,6 +2,9 @@
 		{% load crispy_forms_tags %}
 
 {% block content %}
+	<fieldset class="m-5">
+    <legend class="">Register</legend>
+
 	<form method="post" action="" enctype="multipart/form-data" >
 		{% csrf_token %}
 		{{ form|crispy}}

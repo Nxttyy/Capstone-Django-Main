@@ -36,6 +36,7 @@ def login(request):
 
 			if user is not None:
 				auth.login(request,user)
+				messages.success(request, "Succesfully Loged In.")
 				return redirect("book-home")
 	else:
 		form = LoginUserForm()

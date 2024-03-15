@@ -14,3 +14,10 @@ class BookUploadForm(forms.ModelForm):
         fields = ['title', 'author', 'pcs_left', 'genre', 'cover_image', 'description']
         # exclude = ['']
    
+class BookRatingForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        # fields = '__all__'
+        fields = ['rating']
+        # exclude = ['']
+   

@@ -2,10 +2,14 @@
 		{% load crispy_forms_tags %}
 
 {% block content %}
+<fieldset class="m-5">
+    <legend class="">Login</legend>
+
 	<form method="post" action="" >
 		{% csrf_token %}
 		{{ form|crispy}}
 		<input type="submit" value="Submit" class='btn btn-primary'>
 	</form>
 	<p class="pt-3 text-center">Don't have an account yet? <a href={% url 'register'%}>Register</a></p>
+</fieldset>
 {% endblock %}
