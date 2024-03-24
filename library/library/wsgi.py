@@ -32,4 +32,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 
 application = get_wsgi_application()
-# >>>>>>> django-user-model/main
+
+# vercel_app/settings.py
+WSGI_APPLICATION = 'vercel_app.wsgi.app'
