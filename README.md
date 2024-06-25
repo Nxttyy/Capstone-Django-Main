@@ -1,5 +1,7 @@
 # Capstone-Django-main
 main repository of the project.
+### hosted at
+`https://natty.pythonanywhere.com/`
 ## How to run it
 ### clone the repository
 `git clone https://github.com/GDSC-Django-Capstone/Capstone-Django-main`
